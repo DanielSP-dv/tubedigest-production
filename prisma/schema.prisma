@@ -1,0 +1,158 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+  tokens    OAuthToken[]
+  channelSubs ChannelSubscription[]
+  digests    DigestRun[]
+  digestSchedules DigestSchedule[]
+}
+
+model OAuthToken {
+  id              String   @id @default(cuid())
+  userId          String
+  provider        String
+  accessTokenEnc  String
+  refreshTokenEnc String?
+  expiryDate      DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model ChannelSubscription {
+  id         String   @id @default(cuid())
+  userId     String
+  channelId  String
+  title      String
+  selectedAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, channelId])
+}
+
+model DigestRun {
+  id           String    @id @default(cuid())
+  userId       String
+  scheduledFor DateTime  @default(now())
+  sentAt       DateTime?
+  status       String
+  messageId    String?
+  createdAt    DateTime  @default(now())
+  items        DigestItem[]
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model DigestSchedule {
+  id         String   @id @default(cuid())
+  userId     String
+  cadence    String   // 'immediate', 'daily', 'weekly', 'custom'
+  customDays Int?     // For custom cadence
+  nextRun    DateTime
+  lastRun    DateTime?
+  enabled    Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model DigestItem {
+  id         String   @id @default(cuid())
+  digestRunId String
+  videoId    String
+  position   Int
+
+  digest DigestRun @relation(fields: [digestRunId], references: [id])
+  video Video @relation(fields: [videoId], references: [id])
+}
+
+model Video {
+  id          String   @id @default(cuid())
+  channelId   String
+  title       String
+  url         String   @unique
+  publishedAt DateTime
+  durationS   Int
+  createdAt   DateTime @default(now())
+  
+  summary     Summary?
+  chapters    Chapter[]
+  digestItems DigestItem[]
+  transcript  Transcript?
+}
+
+model Summary {
+  id           String   @id @default(cuid())
+  videoId      String   @unique
+  model        String
+  summaryText  String
+  createdAt    DateTime @default(now())
+  
+  video Video @relation(fields: [videoId], references: [id])
+}
+
+model Chapter {
+  id      String   @id @default(cuid())
+  videoId String
+  startS  Int
+  endS    Int
+  title   String
+  
+  video Video @relation(fields: [videoId], references: [id])
+
+  @@unique([videoId, startS])
+}
+
+model Transcript {
+  id          String   @id @default(cuid())
+  videoId     String   @unique
+  source      String   // 'youtube', 'asr', 'manual'
+  hasCaptions Boolean  @default(false)
+  text        String
+  language    String?
+  format      String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  video Video @relation(fields: [videoId], references: [id])
+}
+
+model SearchAPICache {
+  id                  String    @id @default(cuid())
+  videoId             String    @unique
+  title               String
+  description         String?
+  transcript          String?
+  summary             String?
+  duration            String?
+  publishedAt         DateTime?
+  channelTitle        String?
+  channelId           String?
+  searchQuery         String?
+  apiResponseTimeMs   Int?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  expiresAt           DateTime?
+  isActive            Boolean   @default(true)
+  
+  // Index for fast lookups
+  @@index([videoId])
+  @@index([expiresAt])
+  @@index([isActive])
+}

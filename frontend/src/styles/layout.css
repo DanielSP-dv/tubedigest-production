@@ -1,0 +1,389 @@
+/* TubeDigest Layout Improvements */
+
+/* Global layout consistency */
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #fafafa;
+}
+
+/* Header improvements */
+.app-header {
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  padding: 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 64px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.app-header h3 {
+  margin: 0;
+  color: #1890ff;
+  font-weight: 600;
+}
+
+/* User profile dropdown improvements */
+.user-profile-trigger {
+  padding: 8px 12px !important;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.user-profile-trigger:hover {
+  background-color: #f5f5f5 !important;
+  border-color: #d9d9d9;
+}
+
+.user-info {
+  text-align: left;
+  max-width: 200px;
+}
+
+.user-info .ant-typography {
+  margin: 0 !important;
+}
+
+/* Sidebar improvements */
+.app-sidebar {
+  background: white;
+  border-right: 1px solid #e8e8e8;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 16px 0;
+}
+
+.sidebar-header {
+  padding: 0 16px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 16px;
+}
+
+.sidebar-section {
+  padding: 0 16px;
+  margin-bottom: 24px;
+}
+
+.sidebar-section h5 {
+  color: #666;
+  font-size: 12px;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+/* Channel list improvements */
+.channel-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  margin: 4px 0;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.channel-item:hover {
+  background-color: #f5f5f5;
+}
+
+.channel-info {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.channel-info img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.channel-info strong {
+  font-size: 14px;
+  color: #333;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.channel-info small {
+  font-size: 12px;
+  color: #666;
+  display: block;
+}
+
+/* Main content improvements */
+.main-content {
+  flex: 1;
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.content-header {
+  margin-bottom: 24px;
+}
+
+.content-header h2 {
+  margin-bottom: 4px;
+  color: #333;
+}
+
+.content-header p {
+  color: #666;
+  margin: 0;
+}
+
+/* Search and actions bar */
+.search-actions-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  gap: 16px;
+}
+
+.search-section {
+  flex: 1;
+  max-width: 400px;
+}
+
+.actions-section {
+  display: flex;
+  gap: 8px;
+}
+
+/* Video cards improvements */
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+  padding: 0;
+}
+
+.video-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+  border: 1px solid #f0f0f0;
+}
+
+.video-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.video-thumbnail {
+  position: relative;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+}
+
+.video-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.video-duration {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.video-content {
+  padding: 16px;
+}
+
+.video-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.video-meta {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.video-meta strong {
+  color: #333;
+}
+
+.video-actions {
+  display: flex;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.video-actions .ant-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* Dropdown menu improvements */
+.ant-dropdown-menu {
+  border-radius: 8px !important;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12) !important;
+  border: 1px solid #e8e8e8 !important;
+  padding: 4px !important;
+}
+
+.ant-dropdown-menu-item {
+  border-radius: 6px !important;
+  margin: 2px 0 !important;
+  transition: all 0.2s ease !important;
+}
+
+.ant-dropdown-menu-item:hover {
+  background-color: #f5f5f5 !important;
+}
+
+.ant-dropdown-menu-item-danger:hover {
+  background-color: #fff2f0 !important;
+  color: #ff4d4f !important;
+}
+
+/* Button improvements */
+.ant-btn {
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.ant-btn-primary {
+  background: #1890ff;
+  border-color: #1890ff;
+}
+
+.ant-btn-primary:hover {
+  background: #40a9ff;
+  border-color: #40a9ff;
+  transform: translateY(-1px);
+}
+
+/* Input improvements */
+.ant-input {
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.ant-input:focus {
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+/* Loading states */
+.loading-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  color: #666;
+}
+
+/* Empty states */
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: #666;
+}
+
+.empty-state h3 {
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.empty-state p {
+  margin-bottom: 16px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .app-header {
+    padding: 0 16px;
+  }
+  
+  .main-content {
+    padding: 16px;
+  }
+  
+  .search-actions-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .video-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .user-info {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .video-card {
+    margin: 0 -8px;
+    border-radius: 0;
+  }
+  
+  .actions-section {
+    flex-direction: column;
+  }
+}
+
+/* Smooth transitions for better UX */
+* {
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Fix Ant Design inconsistencies */
+.ant-layout {
+  background: #fafafa;
+}
+
+.ant-layout-header {
+  padding: 0 !important;
+}
+
+.ant-layout-sider {
+  background: white !important;
+}
+
+.ant-layout-content {
+  background: #fafafa;
+}
+
+

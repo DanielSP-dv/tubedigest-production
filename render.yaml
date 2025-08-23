@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: tubedigest-backend
+    env: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: DATABASE_URL
+        value: file:./dev.db
+      - key: REDIS_HOST
+        value: localhost
+      - key: REDIS_PORT
+        value: 6379
+      - key: APP_URL
+        value: https://tubedigest-frontend.vercel.app
+      - key: FRONTEND_URL
+        value: https://tubedigest-frontend.vercel.app
+      - key: GOOGLE_REDIRECT_URI
+        value: https://tubedigest-frontend.vercel.app/auth/google/callback
