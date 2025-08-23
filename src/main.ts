@@ -13,7 +13,7 @@ async function bootstrap() {
   // Enable CORS for frontend
   app.enableCors({
     origin: process.env.NODE_ENV === 'production' 
-      ? ['https://tubedigest-frontend.vercel.app', 'http://localhost:3000']
+      ? ['https://frontend-rho-topaz-86.vercel.app', 'http://localhost:3000']
       : 'http://localhost:3000',
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
