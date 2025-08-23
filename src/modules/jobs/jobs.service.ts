@@ -1,17 +1,27 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Optional } from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
 
 @Injectable()
 export class JobsService {
   constructor(
-    @InjectQueue('digest-queue') private readonly digestQueue: Queue,
-    @InjectQueue('ingest-queue') private readonly ingestQueue: Queue,
-    @InjectQueue('transcript-queue') private readonly transcriptQueue: Queue,
+    @Optional() @InjectQueue('digest-queue') private readonly digestQueue?: Queue,
+    @Optional() @InjectQueue('ingest-queue') private readonly ingestQueue?: Queue,
+    @Optional() @InjectQueue('transcript-queue') private readonly transcriptQueue?: Queue,
   ) {}
 
+  // Check if Redis/BullMQ is available
+  private isRedisAvailable(): boolean {
+    return !!(this.digestQueue && this.ingestQueue && this.transcriptQueue);
+  }
+
   async scheduleDigestForUser(userEmail: string) {
-    await this.digestQueue.add(
+    if (!this.isRedisAvailable()) {
+      console.log(`[JobsService] Redis not available - skipping digest scheduling for ${userEmail}`);
+      return;
+    }
+    
+    await this.digestQueue!.add(
       'process-digest',
       { userEmail },
       {
@@ -27,7 +37,12 @@ export class JobsService {
   }
 
   async scheduleDigestForUserImmediate(userEmail: string) {
-    await this.digestQueue.add(
+    if (!this.isRedisAvailable()) {
+      console.log(`[JobsService] Redis not available - skipping immediate digest scheduling for ${userEmail}`);
+      return;
+    }
+    
+    await this.digestQueue!.add(
       'process-digest',
       { userEmail },
       {
@@ -42,6 +57,11 @@ export class JobsService {
   }
 
   async scheduleRecurringDigest(userEmail: string, cadence: string, nextRun: Date, customDays?: number) {
+    if (!this.isRedisAvailable()) {
+      console.log(`[JobsService] Redis not available - skipping recurring digest scheduling for ${userEmail}`);
+      return;
+    }
+    
     const jobOptions: any = {
       attempts: 3,
       backoff: {
@@ -66,7 +86,7 @@ export class JobsService {
       isRecurring: true,
     };
 
-    await this.digestQueue.add(
+    await this.digestQueue!.add(
       'process-recurring-digest',
       jobData,
       jobOptions,
@@ -74,14 +94,24 @@ export class JobsService {
   }
 
   async cancelRecurringDigest(jobId: string) {
-    const job = await this.digestQueue.getJob(jobId);
+    if (!this.isRedisAvailable()) {
+      console.log(`[JobsService] Redis not available - skipping cancel recurring digest for job ${jobId}`);
+      return;
+    }
+    
+    const job = await this.digestQueue!.getJob(jobId);
     if (job) {
       await job.remove();
     }
   }
 
   async getRecurringDigestJobs(userEmail: string) {
-    const jobs = await this.digestQueue.getJobs(['waiting', 'delayed', 'active']);
+    if (!this.isRedisAvailable()) {
+      console.log(`[JobsService] Redis not available - returning empty array for recurring digest jobs for ${userEmail}`);
+      return [];
+    }
+    
+    const jobs = await this.digestQueue!.getJobs(['waiting', 'delayed', 'active']);
     return jobs.filter(job => 
       job.data.userEmail === userEmail && 
       job.data.isRecurring === true
@@ -89,7 +119,12 @@ export class JobsService {
   }
 
   async scheduleVideoIngestionForUser(userEmail: string, timeWindowHours: number = 24) {
-    await this.ingestQueue.add(
+    if (!this.isRedisAvailable()) {
+      console.log(`[JobsService] Redis not available - skipping video ingestion scheduling for ${userEmail}`);
+      return;
+    }
+    
+    await this.ingestQueue!.add(
       'discover-videos',
       { userEmail, timeWindowHours },
       {
@@ -105,7 +140,12 @@ export class JobsService {
   }
 
   async scheduleVideoIngestionForChannel(userEmail: string, channelId: string, timeWindowHours: number = 24) {
-    await this.ingestQueue.add(
+    if (!this.isRedisAvailable()) {
+      console.log(`[JobsService] Redis not available - skipping channel video ingestion scheduling for ${userEmail}`);
+      return;
+    }
+    
+    await this.ingestQueue!.add(
       'discover-channel-videos',
       { userEmail, channelId, timeWindowHours },
       {
@@ -121,7 +161,12 @@ export class JobsService {
   }
 
   async scheduleTranscriptProcessing(videoId: string, userEmail?: string, useASR: boolean = false) {
-    await this.transcriptQueue.add(
+    if (!this.isRedisAvailable()) {
+      console.log(`[JobsService] Redis not available - skipping transcript processing scheduling for video ${videoId}`);
+      return;
+    }
+    
+    await this.transcriptQueue!.add(
       'process-transcript',
       { videoId, userEmail, useASR },
       {
@@ -137,7 +182,12 @@ export class JobsService {
   }
 
   async scheduleBatchTranscriptProcessing(videoIds: string[], userEmail?: string) {
-    await this.transcriptQueue.add(
+    if (!this.isRedisAvailable()) {
+      console.log(`[JobsService] Redis not available - skipping batch transcript processing scheduling for ${videoIds.length} videos`);
+      return;
+    }
+    
+    await this.transcriptQueue!.add(
       'process-transcripts-batch',
       { videoIds, userEmail },
       {

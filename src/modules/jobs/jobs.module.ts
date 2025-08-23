@@ -11,23 +11,31 @@ import { YouTubeModule } from '../youtube/youtube.module';
 import { AIModule } from '../ai/ai.module';
 import { TranscriptsModule } from '../transcripts/transcripts.module';
 
+// Check if Redis is available (for production deployment)
+const isRedisAvailable = process.env.NODE_ENV !== 'production' || 
+  (process.env.REDIS_HOST && process.env.REDIS_HOST !== 'localhost');
+
+const bullImports = isRedisAvailable ? [
+  BullModule.forRoot({
+    connection: {
+      host: process.env.REDIS_HOST || 'localhost',
+      port: process.env.REDIS_PORT ? Number(process.env.REDIS_PORT) : 6379,
+    },
+  }),
+  BullModule.registerQueue({
+    name: 'digest-queue',
+  }),
+  BullModule.registerQueue({
+    name: 'ingest-queue',
+  }),
+  BullModule.registerQueue({
+    name: 'transcript-queue',
+  }),
+] : [];
+
 @Module({
   imports: [
-    BullModule.forRoot({
-      connection: {
-        host: process.env.REDIS_HOST || 'localhost',
-        port: process.env.REDIS_PORT ? Number(process.env.REDIS_PORT) : 6379,
-      },
-    }),
-    BullModule.registerQueue({
-      name: 'digest-queue',
-    }),
-    BullModule.registerQueue({
-      name: 'ingest-queue',
-    }),
-    BullModule.registerQueue({
-      name: 'transcript-queue',
-    }),
+    ...bullImports,
     EmailModule,
     forwardRef(() => DigestsModule),
     forwardRef(() => VideosModule),
