@@ -7,6 +7,9 @@ import cookieParser from 'cookie-parser';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   
+  // Set global prefix for API routes
+  app.setGlobalPrefix('api');
+  
   // Enable cookie parsing middleware
   app.use(cookieParser());
   
