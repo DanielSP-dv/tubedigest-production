@@ -12,7 +12,7 @@ export class AuthService {
   constructor() {
     const clientId = process.env.GOOGLE_CLIENT_ID || '';
     const clientSecret = process.env.GOOGLE_CLIENT_SECRET || '';
-    const redirectUri = process.env.GOOGLE_REDIRECT_URI || 'http://localhost:3000/auth/google/callback';
+    const redirectUri = process.env.GOOGLE_REDIRECT_URI || 'https://frontend-rho-topaz-86.vercel.app/auth/google/callback';
     this.client = new OAuth2Client({ clientId, clientSecret, redirectUri });
     // Simple AES-256-GCM key from env (32 bytes hex or base64 recommended)
     const key = process.env.TOKEN_ENC_KEY || crypto.createHash('sha256').update('dev-key').digest('hex');
