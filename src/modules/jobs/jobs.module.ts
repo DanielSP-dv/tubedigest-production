@@ -43,7 +43,12 @@ const bullImports = isRedisAvailable ? [
     YouTubeModule,
     AIModule,
   ],
-  providers: [JobsService, JobsProcessor, IngestProcessor, TranscriptProcessor, JobsSchedulerService, PrismaService],
+  providers: [
+    JobsService, 
+    JobsSchedulerService, 
+    PrismaService,
+    ...(isRedisAvailable ? [JobsProcessor, IngestProcessor, TranscriptProcessor] : [])
+  ],
   exports: [JobsService],
 })
 export class JobsModule {}

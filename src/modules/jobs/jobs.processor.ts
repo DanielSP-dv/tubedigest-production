@@ -8,13 +8,17 @@ import { DigestsService } from '../digests/digests.service';
 import { VideosService } from '../videos/videos.service';
 import { TranscriptsService } from '../transcripts/transcripts.service';
 
+// Only create processor if Redis is available
+const isRedisAvailable = process.env.NODE_ENV !== 'production' || 
+  (process.env.REDIS_HOST && process.env.REDIS_HOST !== 'localhost');
+
 @Processor('digest-queue')
 export class JobsProcessor extends WorkerHost {
   constructor(
     private readonly prisma: PrismaService,
     private readonly emailService: EmailService,
     private readonly digestsService: DigestsService,
-    @InjectQueue('digest-queue') private readonly digestQueue: Queue,
+    @InjectQueue('digest-queue') private readonly digestQueue?: Queue,
   ) {
     super();
   }
