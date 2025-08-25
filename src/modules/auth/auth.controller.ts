@@ -26,7 +26,7 @@ export class AuthController {
     console.log('🔍 [AuthController] OAuth callback received');
     console.log('🔍 [AuthController] Code:', code ? 'present' : 'missing');
     
-    const frontendBase = process.env.FRONTEND_URL || 'http://localhost:3000';
+    const frontendBase = process.env.FRONTEND_URL || 'https://frontend-rho-topaz-86.vercel.app';
     if (!code) {
       console.log('❌ [AuthController] No code provided, redirecting to error');
       return res?.redirect(`${frontendBase}/?auth=error`);
@@ -65,7 +65,7 @@ export class AuthController {
 
   @Get('logout')
   async logoutGet(@Res() res: Response) {
-    const frontendBase = process.env.FRONTEND_URL || 'http://localhost:3000';
+    const frontendBase = process.env.FRONTEND_URL || 'https://frontend-rho-topaz-86.vercel.app';
     res.clearCookie('userEmail');
     return res.redirect(frontendBase);
   }
