@@ -145,6 +145,11 @@ export class JobsProcessor extends WorkerHost {
       isRecurring: true,
     };
 
+    if (!this.digestQueue) {
+      console.log(`[JobsProcessor] Redis not available - skipping recurring digest scheduling for ${userEmail}`);
+      return;
+    }
+    
     await this.digestQueue.add(
       'process-recurring-digest',
       jobData,
