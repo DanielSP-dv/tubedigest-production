@@ -73,8 +73,8 @@ export class SecurityMiddleware implements NestMiddleware {
       });
     }
 
-    // Check CSRF protection for state-changing operations
-    if (this.isStateChangingOperation(req.method) && !this.validateCSRFToken(req)) {
+    // Check CSRF protection for state-changing operations (excluding logout for MVP)
+    if (this.isStateChangingOperation(req.method) && !this.shouldExcludeFromCSRF(req) && !this.validateCSRFToken(req)) {
       this.logSecurityEvent({
         timestamp: new Date(),
         ip: clientIp,
@@ -168,6 +168,14 @@ export class SecurityMiddleware implements NestMiddleware {
    */
   private isStateChangingOperation(method: string): boolean {
     return ['POST', 'PUT', 'PATCH', 'DELETE'].includes(method.toUpperCase());
+  }
+
+  /**
+   * Check if the endpoint should be excluded from CSRF validation
+   */
+  private shouldExcludeFromCSRF(req: Request): boolean {
+    // Exclude logout endpoint from CSRF validation for MVP phase
+    return req.path === '/api/auth/logout';
   }
 
   /**

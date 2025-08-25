@@ -287,33 +287,11 @@ export class AuthService {
       });
 
       // Call backend logout endpoint to clear server-side session
-      // First fetch a CSRF token for the logout request
-      let csrfToken: string | null = null;
-      try {
-        const csrfResponse = await fetch('/api/auth/csrf-token', {
-          method: 'GET',
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-        
-        if (csrfResponse.ok) {
-          const csrfData = await csrfResponse.json();
-          if (csrfData.success && csrfData.csrfToken) {
-            csrfToken = csrfData.csrfToken;
-          }
-        }
-      } catch (error) {
-        console.warn('⚠️ [AuthService] Failed to fetch CSRF token for logout:', error);
-      }
-      
       const response = await fetch('/api/auth/logout', {
         method: 'POST', // Ensure POST method is used
         credentials: 'include', // Send cookies with the request
         headers: {
           'Content-Type': 'application/json',
-          ...(csrfToken && { 'x-csrf-token': csrfToken }),
         },
       });
 
