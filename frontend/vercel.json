@@ -1,4 +1,5 @@
 {
+  "_comment": "Force Vercel deployment - API rewrites configured for backend integration",
   "rewrites": [
     {
       "source": "/api/(.*)",
