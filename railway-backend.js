@@ -48,6 +48,23 @@ app.get('/api/auth/google', (req, res) => {
   res.json({ message: 'Google OAuth endpoint' });
 });
 
+// OAuth callback endpoint - CRITICAL FOR LOGIN
+app.get('/auth/google/callback', (req, res) => {
+  const { code } = req.query;
+  
+  console.log('OAuth callback received with code:', code);
+  
+  // In a real implementation, you would:
+  // 1. Exchange the code for tokens
+  // 2. Get user info from Google
+  // 3. Create/update user in database
+  // 4. Set session/cookies
+  
+  // For now, redirect to frontend with success
+  const frontendUrl = 'https://frontend-rho-topaz-86.vercel.app';
+  res.redirect(`${frontendUrl}?auth=success&code=${code}`);
+});
+
 app.get('/api/auth/google/callback', (req, res) => {
   res.json({ message: 'Google OAuth callback' });
 });
@@ -97,7 +114,8 @@ app.get('/', (req, res) => {
       health: '/health',
       auth: '/api/auth/*',
       videos: '/api/videos/*',
-      test: '/api/test'
+      test: '/api/test',
+      oauth_callback: '/auth/google/callback'
     }
   });
 });
@@ -106,4 +124,5 @@ app.listen(port, () => {
   console.log(`🚀 TubeDigest Railway Backend running on port ${port}`);
   console.log(`✅ Health check available at: http://localhost:${port}/health`);
   console.log(`🌐 API endpoints available at: http://localhost:${port}/api`);
+  console.log(`🔐 OAuth callback available at: http://localhost:${port}/auth/google/callback`);
 });
