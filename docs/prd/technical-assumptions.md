@@ -1,0 +1,13 @@
+# Technical Assumptions
+- Repository Structure: Monorepo (single NestJS service)
+- Service Architecture: Monolith (NestJS)
+- Testing Requirements: Unit + Integration (services, jobs)
+- Additional Assumptions and Requests:
+  - YouTube Data API v3 for uploads/captions; Search API as fallback discovery
+  - Email provider preference: Listmonk or Mautic; fallback Postmark/SendGrid
+  - LLM via Ollama (Qwen/Llama family); optional hosted free tier; adapter abstraction
+  - Postgres primary DB; Redis + BullMQ for jobs
+  - Default schedule: daily 09:00 local; weekly optional
+  - Optional ASR fallback (e.g., Whisper) behind a feature flag for videos without captions
+  - Email deliverability: SPF/DKIM/DMARC required and sender warmup plan
+  - Digest personalization: per‑user filters and “top N” cap configurable to control noise

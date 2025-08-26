@@ -1,0 +1,57 @@
+# Production Environment Variables for TubeDigest Vercel Deployment
+# Copy these values when deploying the backend to Railway/Render
+
+# Database
+DATABASE_URL="file:./dev.db"
+
+# Redis (for job queue)
+REDIS_HOST=localhost
+REDIS_PORT=6379
+
+# Email Configuration (Brevo - Recommended)
+BREVO_API_KEY=your-brevo-api-key-here
+SMTP_FROM=digest@tubedigest.com
+
+# Brevo SMTP Configuration (Alternative to API)
+SMTP_HOST=smtp-relay.brevo.com
+SMTP_PORT=587
+SMTP_USER=954bc2001@smtp-brevo.com
+SMTP_PASS=ISpCVyLMGUJT1ctB
+
+# Resend Configuration (Fallback)
+RESEND_API_KEY=your-resend-api-key-here
+
+# Gmail SMTP Configuration (Alternative fallback)
+GMAIL_USER=your-gmail@gmail.com
+GMAIL_APP_PASSWORD=your-gmail-app-password
+
+# App Configuration - UPDATED FOR VERCEL
+APP_URL=https://frontend-rho-topaz-86.vercel.app
+FRONTEND_URL=https://frontend-rho-topaz-86.vercel.app
+
+# YouTube Data API Configuration
+YOUTUBE_API_KEY=your-youtube-api-key-here
+YOUTUBE_API_QUOTA_LIMIT=10000
+YOUTUBE_API_QUOTA_RESET_HOURS=24
+
+# Google OAuth Configuration - UPDATED FOR VERCEL
+GOOGLE_CLIENT_ID=your-google-client-id-here
+GOOGLE_CLIENT_SECRET=your-google-client-secret-here
+GOOGLE_REDIRECT_URI=https://frontend-rho-topaz-86.vercel.app/auth/google/callback
+
+# Token Encryption (generate a random 32-byte hex key)
+TOKEN_ENC_KEY=your-32-byte-hex-encryption-key-here
+
+# Session Security (generate a random 64-byte hex key)
+SESSION_SECRET_KEY=your-64-byte-hex-session-secret-key-here
+
+# AI Processing Configuration
+OPENAI_API_KEY=your-openai-api-key-here
+AI_MODEL=gpt-4
+AI_MAX_TOKENS=1000
+
+# SearchAPI Configuration
+SEARCHAPI_KEY=MwZLa4Xo12MR8HUAK7KYQa5e
+
+# Environment
+NODE_ENV=production

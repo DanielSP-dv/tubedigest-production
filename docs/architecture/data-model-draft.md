@@ -1,0 +1,12 @@
+# Data Model (draft)
+- user(id, email, tz, created_at)
+- oauth_token(user_id, provider, access_token, refresh_token, expires_at)
+- channel_subscription(user_id, channel_id, title, selected_at)
+- video(id, channel_id, title, url, published_at, duration_s)
+- transcript(video_id, source, has_captions, text or blob)
+- summary(video_id, model, summary_text)
+- chapter(id, video_id, start_s, end_s, title)
+- digest_run(id, user_id, scheduled_for, sent_at, status)
+- digest_item(digest_run_id, video_id, position)
+- watch_later(id, user_id, video_id, saved_at)
+

@@ -7,17 +7,9 @@ export class HealthController {
     return {
       status: 'ok',
       timestamp: new Date().toISOString(),
-      uptime: process.uptime(),
-      service: 'TubeDigest Backend'
-    };
-  }
-
-  @Get('test')
-  getHealthTest() {
-    return {
-      status: 'ok',
-      message: 'Health check test endpoint working',
-      timestamp: new Date().toISOString()
+      environment: process.env.NODE_ENV || 'development',
+      service: 'TubeDigest Backend',
+      version: '1.0.0'
     };
   }
 }

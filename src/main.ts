@@ -13,17 +13,32 @@ async function bootstrap() {
   // Enable cookie parsing middleware
   app.use(cookieParser());
   
-  // Enable CORS for frontend
+  // Enable CORS for frontend (updated for Railway)
+  const allowedOrigins = [
+    'https://frontend-rho-topaz-86.vercel.app',
+    'http://localhost:3000',
+    'http://localhost:3001'
+  ];
+  
+  // Add Railway domain to allowed origins if available
+  if (process.env.RAILWAY_STATIC_URL) {
+    allowedOrigins.push(process.env.RAILWAY_STATIC_URL);
+  }
+  
   app.enableCors({
     origin: process.env.NODE_ENV === 'production' 
-      ? ['https://frontend-rho-topaz-86.vercel.app', 'http://localhost:3000']
+      ? allowedOrigins
       : 'http://localhost:3000',
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
   });
   
-  await app.listen(process.env.PORT ? Number(process.env.PORT) : 3001);
+  const port = process.env.PORT ? Number(process.env.PORT) : 3001;
+  console.log(`🚀 Application starting on port ${port} in ${process.env.NODE_ENV || 'development'} mode`);
+  
+  await app.listen(port);
+  console.log(`✅ Application is running on: http://localhost:${port}`);
 }
 
 bootstrap();
