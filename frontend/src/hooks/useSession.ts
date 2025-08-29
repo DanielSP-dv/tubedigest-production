@@ -39,7 +39,7 @@ export const useSession = (): UseSessionReturn => {
     try {
       setSessionState(prev => ({ ...prev, isLoading: true, error: null }));
       
-      const response = await fetch('/api/me', {
+      const response = await fetch('/api/auth/me', {
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',

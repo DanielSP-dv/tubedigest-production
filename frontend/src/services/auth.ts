@@ -162,7 +162,7 @@ export class AuthService {
         await new Promise(resolve => setTimeout(resolve, 500));
       }
       
-      const response = await fetch('/api/me', {
+      const response = await fetch('/api/auth/me', {
         credentials: 'include', // Send cookies with the request
         headers: {
           'Content-Type': 'application/json',
