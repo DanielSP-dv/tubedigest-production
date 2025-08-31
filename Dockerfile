@@ -8,16 +8,18 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install --only=production
-
-# Copy source code
+# Install all dependencies (including devDependencies for build)
 COPY . .
+RUN npm install
 
 # Generate Prisma client
 RUN npx prisma generate
 
 # Build the application
 RUN npm run build
+
+# Remove devDependencies and install only production dependencies
+RUN npm prune --production
 
 # Expose port
 EXPOSE 3001
