@@ -69,9 +69,15 @@ export class AuthService {
       update: {},
       create: { email: userEmail },
     });
+
+    await this.prisma.oAuthToken.deleteMany({
+      where: { userId: user.id, provider: 'google' },
+    });
+
     const accessTokenEnc = tokens.access_token ? this.encrypt(tokens.access_token) : '';
     const refreshTokenEnc = tokens.refresh_token ? this.encrypt(tokens.refresh_token) : null;
     const expiryDate = tokens.expiry_date ? new Date(tokens.expiry_date) : null;
+
     await this.prisma.oAuthToken.create({
       data: {
         userId: user.id,

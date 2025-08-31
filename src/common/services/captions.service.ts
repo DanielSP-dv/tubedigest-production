@@ -1,9 +1,20 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { google } from 'googleapis';
-import { CaptionResponse, CaptionsProvider } from '../../modules/transcripts/interfaces/captions-provider.interface';
 import { CaptionParserService } from './caption-parser.service';
 import { LanguageDetectorService } from './language-detector.service';
+
+interface CaptionResponse {
+  hasCaptions: boolean;
+  text?: string;
+  language?: string;
+  format?: string;
+  error?: string;
+}
+
+interface CaptionsProvider {
+  fetchCaptions(videoId: string, userEmail?: string): Promise<CaptionResponse>;
+}
 
 @Injectable()
 export class CaptionsService implements CaptionsProvider {

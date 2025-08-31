@@ -47,3 +47,4 @@ recommendations:
       refs: ['src/modules/auth/auth.service.ts']
     - action: 'Implement logout confirmation dialog'
       refs: ['frontend/src/services/auth.ts']
+

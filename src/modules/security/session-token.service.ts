@@ -102,8 +102,10 @@ export class SessionTokenService {
         this.logger.warn(`JWT validation failed: ${error.message}`);
       } else if (error instanceof jwt.TokenExpiredError) {
         this.logger.warn(`Token expired: ${error.message}`);
+      } else if (error instanceof Error) {
+        this.logger.error(`Token validation error: ${error.message}`);
       } else {
-        this.logger.error(`Token validation error: ${(error as Error).message}`);
+        this.logger.error('An unknown error occurred during token validation');
       }
       return null;
     }

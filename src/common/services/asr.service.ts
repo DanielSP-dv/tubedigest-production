@@ -1,6 +1,13 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { CaptionResponse } from '../../modules/transcripts/interfaces/captions-provider.interface';
+
+interface CaptionResponse {
+  hasCaptions: boolean;
+  text?: string;
+  language?: string;
+  format?: string;
+  error?: string;
+}
 
 @Injectable()
 export class ASRService {

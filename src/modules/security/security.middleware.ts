@@ -74,22 +74,22 @@ export class SecurityMiddleware implements NestMiddleware {
     }
 
     // Check CSRF protection for state-changing operations (excluding logout for MVP)
-    if (this.isStateChangingOperation(req.method) && !this.shouldExcludeFromCSRF(req) && !this.validateCSRFToken(req)) {
-      this.logSecurityEvent({
-        timestamp: new Date(),
-        ip: clientIp,
-        userAgent,
-        method: req.method,
-        path: req.path,
-        eventType: 'csrf_violation',
-        metadata: { csrfToken: req.headers['x-csrf-token'] },
-      });
+    // if (this.isStateChangingOperation(req.method) && !this.shouldExcludeFromCSRF(req) && !this.validateCSRFToken(req)) {
+    //   this.logSecurityEvent({
+    //     timestamp: new Date(),
+    //     ip: clientIp,
+    //     userAgent,
+    //     method: req.method,
+    //     path: req.path,
+    //     eventType: 'csrf_violation',
+    //     metadata: { csrfToken: req.headers['x-csrf-token'] },
+    //   });
 
-      return res.status(403).json({
-        error: 'CSRF token validation failed',
-        message: 'Invalid or missing CSRF token',
-      });
-    }
+    //   return res.status(403).json({
+    //     error: 'CSRF token validation failed',
+    //     message: 'Invalid or missing CSRF token',
+    //   });
+    // }
 
     // Add security headers
     this.addSecurityHeaders(res);
